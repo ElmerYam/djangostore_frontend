@@ -33,34 +33,32 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import axios from 'axios'
 
 export default {
   name: 'Home',
   data() {
     return {
-      latestProducts: [
-        {
-        "id": 1,
-        "name": "Brown leather",
-        "get_absolute_url": "/summer/brown-leather/",
-        "description": "the desc",
-        "price": "199.00",
-        "get_image": "http://127.0.0.1:8000/media/uploads/EKS.jpg",
-        "get_thumbnail": "http://127.0.0.1:8000/media/uploads/uploads/EKS.jpg"},
-        {
-          "id": 2,
-          "name": "Elmer leather",
-          "get_absolute_url": "/summer/brown-leather/",
-          "description": "the desc",
-          "price": "199000.00",
-          "get_image": "http://127.0.0.1:8000/media/uploads/EKS.jpg",
-          "get_thumbnail": "http://127.0.0.1:8000/media/uploads/uploads/EKS.jpg"
-        },
-        {}]
+      latestProducts: []
     }
   },
   components: {
     HelloWorld
+  },
+  mounted(){
+    this.getLatestProducts()
+  },
+  methods: {
+    getLatestProducts(){
+      axios
+        .get('/api/v1/latest-products/')
+        .then(response => {
+          this.latestProducts = response.data
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+    }
   }
 }
 </script>
